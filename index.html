@@ -722,7 +722,7 @@
             };
             reader.readAsText(file);
         }
-        
+
         // --- FUNÇÃO PARA LIMPAR O SISTEMA ---
         function limparSistema() {
             if (confirm("ATENÇÃO: Esta ação irá apagar TODOS os dados do sistema. Esta ação é irreversível. Deseja continuar?")) {
@@ -937,7 +937,8 @@
             let valorAberto = 0;
             let totalReceitas = 0;
 
-            const despesasFixas = 1500;
+            // Despesa fixa corrigida para começar em 0
+            const despesasFixas = 0;
             const despesasVariaveis = 0.2;
 
             ordensServico.forEach(os => {
