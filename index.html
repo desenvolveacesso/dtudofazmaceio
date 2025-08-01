@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão Dtudo Faz Maceió</title>
+
+    <style>
+        :root {
+            --cor-primaria: rgb(139, 44, 44); /* Marrom Avermelhado */
+            --cor-secundaria: rgb(255, 193, 7); /* Amarelo Ouro */
+            --cor-fundo: #f4f4f4;
+            --cor-texto: #333;
+            --cor-botoes: #555;
+            --cor-borda: #ccc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--cor-secundaria);
+        }
+
+        header h1 {
+            color: var(--cor-primaria);
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        header p {
+            color: var(--cor-botoes);
+            margin-top: 5px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            border-bottom: 1px solid var(--cor-borda);
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            color: var(--cor-botoes);
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            background-color: #eee;
+        }
+
+        .tab-button.active {
+            color: var(--cor-primaria);
+            border-bottom: 3px solid var(--cor-primaria);
+        }
+
+        .tab-content {
+            display: none;
+            padding-top: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--cor-borda);
+        }
+
+        h2 {
+            color: var(--cor-primaria);
+            border-bottom: 1px solid var(--cor-secundaria);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        form label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        form input[type="text"], form input[type="email"], form input[type="number"], form input[type="date"], form textarea, form select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        form button, .btn {
+            background-color: var(--cor-primaria);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover, .btn:hover {
+            background-color: #a03c3c;
+        }
+
+        .btn-secundario {
+            background-color: var(--cor-botoes);
+        }
+
+        .btn-secundario:hover {
+            background-color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed;
+        }
+        table, th, td {
+            border: 1px solid var(--cor-borda);
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #eee;
+        }
+
+        #logo-preview {
+            max-width: 150px;
+            max-height: 150px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            display: none;
+        }
+
+        /* Estilos para modais */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 20px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .botoes-documentos {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Estilos para o balanço */
+        .balanco-container {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .balanco-item {
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            flex: 1;
+            margin: 0 5px;
+        }
+        .receitas {
+            background-color: #4CAF50;
+        }
+        .despesas {
+            background-color: #f44336;
+        }
+        .balanco {
+            background-color: #2196F3;
+        }
+        .balanco-item h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .balanco-item p {
+            margin: 5px 0 0;
+            font-size: 1.5em;
+        }
+
+        /* Estilos para responsividade */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 10px;
+            }
+            header h1 {
+                font-size: 1.8em;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tab-button {
+                width: 100%;
+                margin-bottom: 5px;
+                box-sizing: border-box;
+            }
+            .botoes-documentos {
+                flex-direction: column;
+            }
+            .botoes-documentos button {
+                width: 100%;
+            }
+            form input[type="text"], form input[type="email"], form input[type="number"], form input[type="date"], form textarea, form select {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .section {
+                padding: 15px;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            .balanco-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="empresa-nome-header">Sistema de Gestão</h1>
+            <p id="empresa-slogan-header">Slogan da Empresa</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'agendamento')">Agendamento & OS</button>
+            <button class="tab-button" onclick="openTab(event, 'clientes')">Cadastro de Clientes</button>
+            <button class="tab-button" onclick="openTab(event, 'financeiro')">Financeiro</button>
+            <button class="tab-button" onclick="openTab(event, 'config')">Configurações</button>
+        </div>
+
+        <div id="agendamento" class="tab-content active">
+            <div class="section">
+                <h2>Criação de Documentos</h2>
+                <div class="botoes-documentos">
+                    <button type="button" onclick="abrirModal('modal-orcamento')">Gerar Orçamento</button>
+                    <button type="button" onclick="abrirModal('modal-os')">Gerar Ordem de Serviço</button>
+                    <button type="button" onclick="abrirModal('modal-recibo')">Gerar Recibo</button>
+                    <button type="button" onclick="abrirModal('modal-contrato')">Gerar Contrato</button>
+                    <button type="button" onclick="abrirModal('modal-salvar-os')">Salvar Nova OS</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Serviços Agendados</h2>
+                <table id="tabela-os">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Serviço</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="clientes" class="tab-content">
+            <div class="section">
+                <h2>Lista de Clientes
+                <button type="button" class="btn" onclick="abrirModalCliente()">Adicionar Novo Cliente</button>
+                </h2>
+                <table id="tabela-clientes">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="financeiro" class="tab-content">
+            <div class="section">
+                <h2>Resumo Financeiro</h2>
+                <p>Total de Faturamento: <span id="total-faturado">R$ 0,00</span></p>
+                <p>Pedidos em Aberto: <span id="pedidos-abertos">0</span></p>
+                <p>Valor de Pedidos em Aberto: <span id="valor-aberto">R$ 0,00</span></p>
+                <p>Projeção de Faturamento: <span id="projecao-faturamento">R$ 0,00</span></p>
+            </div>
+
+            <div class="section">
+                <h2>Balanço Financeiro</h2>
+                <div class="balanco-container">
+                    <div class="balanco-item receitas">
+                        <h3>Receitas</h3>
+                        <p id="balanco-receitas">R$ 0,00</p>
+                    </div>
+                    <div class="balanco-item despesas">
+                        <h3>Despesas</h3>
+                        <p id="balanco-despesas">R$ 0,00</p>
+                    </div>
+                    <div class="balanco-item balanco">
+                        <h3>Balanço</h3>
+                        <p id="balanco-total">R$ 0,00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Fluxo de Caixa</h2>
+                <table id="tabela-fluxo-caixa">
+                    <thead>
+                        <tr>
+                            <th>ID OS</th>
+                            <th>Cliente</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="config" class="tab-content">
+            <div class="section">
+                <h2>Dados da Empresa</h2>
+                <form id="form-empresa">
+                    <label for="empresa-nome">Nome da Empresa:</label>
+                    <input type="text" id="empresa-nome" required>
+                    <label for="empresa-slogan">Slogan:</label>
+                    <input type="text" id="empresa-slogan">
+                    <label for="empresa-contato">Contato:</label>
+                    <input type="text" id="empresa-contato">
+                    <label for="empresa-cnpj">CNPJ:</label>
+                    <input type="text" id="empresa-cnpj">
+                    <label for="empresa-endereco">Endereço:</label>
+                    <textarea id="empresa-endereco" rows="3"></textarea>
+                    <button type="submit">Salvar Dados da Empresa</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h2>Logo da Empresa</h2>
+                <label for="logo-upload">Fazer Upload da Logo:</label>
+                <input type="file" id="logo-upload" accept="image/*">
+                <img id="logo-preview" alt="Pré-visualização da logo">
+            </div>
+
+            <div class="section">
+                <h2>Backup e Restauração</h2>
+                <p>Faça um backup dos seus dados para não os perder!</p>
+                <button class="btn btn-secundario" onclick="exportarBackup()">Exportar Backup (JSON)</button>
+                <p>Importe um backup para restaurar seus dados.</p>
+                <input type="file" id="backup-import" accept=".json">
+                <button class="btn btn-secundario" onclick="importarBackup()">Importar Backup</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-cliente" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="fecharModal('modal-cliente')">&times;</span>
+            <h2 id="modal-cliente-titulo">Cadastro de Clientes</h2>
+            <form id="form-cliente">
+                <input type="hidden" id="cliente-id">
+                <label for="cliente-nome">Nome Completo:</label>
+                <input type="text" id="cliente-nome" required>
+                <label for="cliente-telefone">Telefone:</label>
+                <input type="text" id="cliente-telefone">
+                <label for="cliente-cpfcnpj">CPF ou CNPJ:</label>
+                <input type="text" id="cliente-cpfcnpj">
+                <label for="cliente-email">E-mail:</label>
+                <input type="email" id="cliente-email">
+                <label for="cliente-endereco">Endereço:</label>
+                <textarea id="cliente-endereco" rows="3"></textarea>
+                <button type="submit">Salvar Cliente</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-orcamento" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="fecharModal('modal-orcamento')">&times;</span>
+            <h2>Gerar Orçamento</h2>
+            <form id="form-orcamento">
+                <label for="orcamento-cliente">Cliente:</label>
+                <select id="orcamento-cliente" class="select-cliente" required>
+                    <option value="">Selecione um cliente...</option>
+                </select>
+                <label for="orcamento-servico">Descrição do Serviço:</label>
+                <textarea id="orcamento-servico" rows="4" required></textarea>
+                <label for="orcamento-valor">Valor (R$):</label>
+                <input type="number" id="orcamento-valor" step="0.01" required>
+                <label for="orcamento-data">Data do Orçamento:</label>
+                <input type="date" id="orcamento-data" required>
+                <button type="button" onclick="gerarDocumento('orcamento')">Gerar PDF</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-os" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="fecharModal('modal-os')">&times;</span>
+            <h2>Gerar Ordem de Serviço</h2>
+            <form id="form-os-modal">
+                <input type="hidden" id="os-origem-id">
+                <label for="os-modal-cliente">Cliente:</label>
+                <select id="os-modal-cliente" class="select-cliente" required>
+                    <option value="">Selecione um cliente...</option>
+                </select>
+                <label for="os-modal-servico">Descrição do Serviço:</label>
+                <textarea id="os-modal-servico" rows="4" required></textarea>
+                <label for="os-modal-valor">Valor (R$):</label>
+                <input type="number" id="os-modal-valor" step="0.01" required>
+                <label for="os-modal-data-inicio">Data Início:</label>
+                <input type="date" id="os-modal-data-inicio" required>
+                <label for="os-modal-data-final">Data Final (Previsão):</label>
+                <input type="date" id="os-modal-data-final" required>
+                <label for="os-modal-tecnico">Técnico Responsável:</label>
+                <input type="text" id="os-modal-tecnico" required>
+                <button type="button" onclick="gerarDocumento('os')">Gerar PDF</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-recibo" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="fecharModal('modal-recibo')">&times;</span>
+            <h2>Gerar Recibo</h2>
+            <form id="form-recibo">
+                <input type="hidden" id="recibo-origem-id">
+                <label for="recibo-cliente">Cliente:</label>
+                <select id="recibo-cliente" class="select-cliente" required>
+                    <option value="">Selecione um cliente...</option>
+                </select>
+                <label for="recibo-servico">Descrição do Serviço:</label>
+                <textarea id="recibo-servico" rows="4" required></textarea>
+                <label for="recibo-valor">Valor (R$):</label>
+                <input type="number" id="recibo-valor" step="0.01" required>
+                <label for="recibo-data">Data do Pagamento:</label>
+                <input type="date" id="recibo-data" required>
+                <button type="button" onclick="gerarDocumento('recibo')">Gerar PDF</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-contrato" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="fecharModal('modal-contrato')">&times;</span>
+            <h2>Gerar Contrato</h2>
+            <form id="form-contrato">
+                <input type="hidden" id="contrato-origem-id">
+                <label for="contrato-cliente">Cliente:</label>
+                <select id="contrato-cliente" class="select-cliente" required>
+                    <option value="">Selecione um cliente...</option>
+                </select>
+                <label for="contrato-servico">Descrição do Serviço:</label>
+                <textarea id="contrato-servico" rows="4" required></textarea>
+                <label for="contrato-valor">Valor (R$):</label>
+                <input type="number" id="contrato-valor" step="0.01" required>
+                <label for="contrato-data-inicio">Data de Início:</label>
+                <input type="date" id="contrato-data-inicio" required>
+                <label for="contrato-data-final">Data de Conclusão (Previsão):</label>
+                <input type="date" id="contrato-data-final" required>
+                <label for="contrato-condicoes-pagamento">Condições de Pagamento:</label>
+                <textarea id="contrato-condicoes-pagamento" rows="3" placeholder="Ex: 50% na contratação e 50% na conclusão"></textarea>
+                <button type="button" onclick="gerarDocumento('contrato')">Gerar PDF</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-salvar-os" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="fecharModal('modal-salvar-os')">&times;</span>
+            <h2 id="modal-salvar-os-titulo">Salvar Ordem de Serviço</h2>
+            <form id="form-os-salvar">
+                <input type="hidden" id="salvar-os-id">
+                <label for="salvar-os-cliente">Cliente:</label>
+                <select id="salvar-os-cliente" class="select-cliente" required>
+                    <option value="">Selecione um cliente...</option>
+                </select>
+                <label for="salvar-os-servico">Descrição do Serviço:</label>
+                <textarea id="salvar-os-servico" rows="4" required></textarea>
+                <label for="salvar-os-valor">Valor (R$):</label>
+                <input type="number" id="salvar-os-valor" step="0.01" required>
+                <label for="salvar-os-data">Data de Agendamento:</label>
+                <input type="date" id="salvar-os-data" required>
+                <label for="salvar-os-status">Status:</label>
+                <select id="salvar-os-status" required>
+                    <option value="Em aberto">Em aberto</option>
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Fechado">Fechado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+                <button type="button" onclick="salvarOS()">Salvar OS</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // --- FUNÇÕES DE CONTROLE DE TABS ---
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = 'none';
+            }
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            document.getElementById(tabName).style.display = 'block';
+            if (evt) {
+              evt.currentTarget.classList.add('active');
+            } else {
+              document.querySelector(`.tab-button[onclick*="${tabName}"]`).classList.add('active');
+            }
+
+            // Atualizar o conteúdo de cada tab quando ela é aberta
+            if (tabName === 'clientes') {
+                carregarClientes();
+            } else if (tabName === 'agendamento') {
+                carregarSelectClientes();
+                carregarTabelaOS();
+            } else if (tabName === 'financeiro') {
+                atualizarPainelFinanceiro();
+                carregarFluxoCaixa();
+            } else if (tabName === 'config') {
+                carregarDadosEmpresaInterface();
+                carregarLogoPreview();
+            }
+        }
+
+        // --- FUNÇÕES DE CONTROLE DE MODAIS ---
+        function abrirModal(modalId) {
+            const form = document.getElementById(modalId).querySelector('form');
+            if (form) form.reset();
+
+            document.getElementById(modalId).style.display = 'block';
+            carregarSelectClientes();
+        }
+
+        function fecharModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // --- FUNÇÕES DE MANIPULAÇÃO DE DADOS (localStorage) ---
+        function salvarDados(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function carregarDados(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function salvarDadosEmpresa(dados) {
+            localStorage.setItem('dtudo-empresa-dados', JSON.stringify(dados));
+        }
+
+        function carregarDadosEmpresa() {
+            const dados = localStorage.getItem('dtudo-empresa-dados');
+            return dados ? JSON.parse(dados) : {
+                nome: "Sistema de Gestão",
+                slogan: "Slogan da Empresa",
+                contato: "",
+                cnpj: "",
+                endereco: ""
+            };
+        }
+
+        // --- FUNÇÕES DE BACKUP ---
+        function exportarBackup() {
+            const clientes = carregarDados('dtudo-clientes');
+            const ordensServico = carregarDados('dtudo-os');
+            const empresaDados = carregarDadosEmpresa();
+            const logoBase64 = localStorage.getItem('dtudo-logo');
+
+            const backupData = { clientes, ordensServico, empresaDados, logoBase64 };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `backup_dtudo_faz_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importarBackup() {
+            const input = document.getElementById('backup-import');
+            const file = input.files[0];
+            if (!file) {
+                alert("Por favor, selecione um arquivo de backup.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const backupData = JSON.parse(event.target.result);
+                    if (confirm("Ao importar, todos os dados atuais serão substituídos. Deseja continuar?")) {
+                        salvarDados('dtudo-clientes', backupData.clientes || []);
+                        salvarDados('dtudo-os', backupData.ordensServico || []);
+                        salvarDadosEmpresa(backupData.empresaDados || {});
+                        localStorage.setItem('dtudo-logo', backupData.logoBase64 || null);
+
+                        openTab(null, 'agendamento');
+                        carregarClientes();
+                        carregarSelectClientes();
+                        carregarTabelaOS();
+                        atualizarPainelFinanceiro();
+                        carregarFluxoCaixa();
+                        carregarDadosEmpresaInterface();
+                        carregarLogoPreview();
+                        atualizarHeader();
+
+                        alert("Backup importado com sucesso!");
+                    }
+                } catch (e) {
+                    alert("Erro ao ler o arquivo. Certifique-se de que é um arquivo de backup válido.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- FUNÇÕES DE CADASTRO DE CLIENTES (AGORA EM MODAL) ---
+        function abrirModalCliente(id = null) {
+            const form = document.getElementById('form-cliente');
+            form.reset();
+            document.getElementById('modal-cliente-titulo').textContent = id ? 'Editar Cliente' : 'Cadastro de Clientes';
+            document.getElementById('cliente-id').value = '';
+
+            if (id) {
+                const clientes = carregarDados('dtudo-clientes');
+                const cliente = clientes.find(c => c.id == id);
+                if (cliente) {
+                    document.getElementById('cliente-id').value = cliente.id;
+                    document.getElementById('cliente-nome').value = cliente.nome;
+                    document.getElementById('cliente-telefone').value = cliente.telefone;
+                    document.getElementById('cliente-cpfcnpj').value = cliente.cpfcnpj;
+                    document.getElementById('cliente-email').value = cliente.email;
+                    document.getElementById('cliente-endereco').value = cliente.endereco;
+                }
+            }
+            abrirModal('modal-cliente');
+        }
+
+        document.getElementById('form-cliente').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const clienteId = document.getElementById('cliente-id').value;
+            const cliente = {
+                id: clienteId || Date.now(),
+                nome: document.getElementById('cliente-nome').value,
+                telefone: document.getElementById('cliente-telefone').value,
+                cpfcnpj: document.getElementById('cliente-cpfcnpj').value,
+                email: document.getElementById('cliente-email').value,
+                endereco: document.getElementById('cliente-endereco').value,
+            };
+
+            let clientes = carregarDados('dtudo-clientes');
+            if (clienteId) {
+                clientes = clientes.map(c => c.id == clienteId ? cliente : c);
+            } else {
+                clientes.push(cliente);
+            }
+            salvarDados('dtudo-clientes', clientes);
+            carregarClientes();
+            fecharModal('modal-cliente');
+            alert("Cliente salvo com sucesso!");
+        });
+
+        function carregarClientes() {
+            const clientes = carregarDados('dtudo-clientes');
+            const tabelaBody = document.getElementById('tabela-clientes').getElementsByTagName('tbody')[0];
+            tabelaBody.innerHTML = '';
+            clientes.forEach(c => {
+                const row = tabelaBody.insertRow();
+                row.insertCell(0).textContent = c.nome;
+                row.insertCell(1).textContent = c.telefone;
+                row.insertCell(2).textContent = c.cpfcnpj;
+
+                const acoesCell = row.insertCell(3);
+                const btnEditar = document.createElement('button');
+                btnEditar.textContent = 'Editar';
+                btnEditar.onclick = () => abrirModalCliente(c.id);
+                acoesCell.appendChild(btnEditar);
+            });
+        }
+
+        function carregarSelectClientes() {
+            const clientes = carregarDados('dtudo-clientes');
+            const selects = document.querySelectorAll('.select-cliente');
+
+            selects.forEach(select => {
+                const clienteSelecionado = select.value;
+                select.innerHTML = '<option value="">Selecione um cliente...</option>';
+                clientes.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.id;
+                    option.textContent = c.nome;
+                    if (c.id == clienteSelecionado) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        // --- FUNÇÕES DE GESTÃO DE ORDEM DE SERVIÇO ---
+        function salvarOS() {
+            const osId = document.getElementById('salvar-os-id').value;
+            const clienteId = document.getElementById('salvar-os-cliente').value;
+            const servico = document.getElementById('salvar-os-servico').value;
+            const valor = parseFloat(document.getElementById('salvar-os-valor').value);
+            const data = document.getElementById('salvar-os-data').value;
+            const status = document.getElementById('salvar-os-status').value;
+
+            if (!clienteId || !servico || isNaN(valor) || !data) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
+            const os = {
+                id: osId || Date.now(),
+                clienteId: clienteId,
+                servico: servico,
+                valor: valor,
+                data: data,
+                status: status
+            };
+
+            let ordensServico = carregarDados('dtudo-os');
+            if (osId) {
+                ordensServico = ordensServico.map(o => o.id == osId ? os : o);
+            } else {
+                ordensServico.push(os);
+            }
+            salvarDados('dtudo-os', ordensServico);
+
+            carregarTabelaOS();
+            atualizarPainelFinanceiro();
+            document.getElementById('form-os-salvar').reset();
+            fecharModal('modal-salvar-os');
+            alert("Ordem de Serviço salva com sucesso!");
+        }
+
+        function carregarTabelaOS() {
+            const ordensServico = carregarDados('dtudo-os');
+            const clientes = carregarDados('dtudo-clientes');
+            const tabelaBody = document.getElementById('tabela-os').getElementsByTagName('tbody')[0];
+            tabelaBody.innerHTML = '';
+
+            ordensServico.forEach(os => {
+                const cliente = clientes.find(c => c.id == os.clienteId) || { nome: 'Cliente não encontrado' };
+                const row = tabelaBody.insertRow();
+                row.insertCell(0).textContent = os.id;
+                row.insertCell(1).textContent = cliente.nome;
+                row.insertCell(2).textContent = os.servico;
+                row.insertCell(3).textContent = `R$ ${os.valor.toFixed(2)}`;
+                row.insertCell(4).textContent = os.data;
+                row.insertCell(5).textContent = os.status;
+
+                const acoesCell = row.insertCell(6);
+                const btnEditar = document.createElement('button');
+                btnEditar.textContent = 'Editar';
+                btnEditar.style.marginRight = '5px';
+                btnEditar.onclick = () => editarOS(os.id);
+                acoesCell.appendChild(btnEditar);
+
+                const btnGerar = document.createElement('button');
+                btnGerar.textContent = 'Gerar Contrato';
+                btnGerar.onclick = () => abrirModalParaGerarDocumento('contrato', os.id);
+                acoesCell.appendChild(btnGerar);
+            });
+        }
+
+        function editarOS(id) {
+            const ordensServico = carregarDados('dtudo-os');
+            const os = ordensServico.find(o => o.id == id);
+            if (os) {
+                document.getElementById('modal-salvar-os-titulo').textContent = 'Editar Ordem de Serviço';
+                document.getElementById('salvar-os-id').value = os.id;
+                document.getElementById('salvar-os-cliente').value = os.clienteId;
+                document.getElementById('salvar-os-servico').value = os.servico;
+                document.getElementById('salvar-os-valor').value = os.valor;
+                document.getElementById('salvar-os-data').value = os.data;
+                document.getElementById('salvar-os-status').value = os.status;
+                abrirModal('modal-salvar-os');
+            }
+        }
+
+        function abrirModalParaGerarDocumento(tipo, idOrigem) {
+            let dadosOrigem;
+            if (idOrigem) {
+                const ordensServico = carregarDados('dtudo-os');
+                dadosOrigem = ordensServico.find(os => os.id == idOrigem);
+            }
+
+            if (!dadosOrigem && tipo !== 'orcamento') {
+                 alert("Não foi possível carregar os dados de origem. Gere o documento manualmente.");
+                 abrirModal('modal-' + tipo);
+                 return;
+            }
+
+            abrirModal('modal-' + tipo);
+            const modalForm = document.getElementById(`form-${tipo}`);
+
+            if (dadosOrigem) {
+                modalForm.querySelector(`#${tipo}-origem-id`).value = idOrigem;
+                modalForm.querySelector(`#${tipo}-cliente`).value = dadosOrigem.clienteId;
+                modalForm.querySelector(`#${tipo}-servico`).value = dadosOrigem.servico;
+                modalForm.querySelector(`#${tipo}-valor`).value = dadosOrigem.valor;
+
+                if (modalForm.querySelector(`#${tipo}-data`)) {
+                    modalForm.querySelector(`#${tipo}-data`).value = dadosOrigem.data;
+                }
+                if (modalForm.querySelector(`#${tipo}-data-inicio`)) {
+                    modalForm.querySelector(`#${tipo}-data-inicio`).value = dadosOrigem.data;
+                }
+            }
+        }
+
+        // --- FUNÇÕES DE CONTROLE FINANCEIRO ---
+        function atualizarPainelFinanceiro() {
+            const ordensServico = carregarDados('dtudo-os');
+            let totalFaturado = 0;
+            let pedidosAbertos = 0;
+            let valorAberto = 0;
+            let totalReceitas = 0;
+
+            const despesasFixas = 1500;
+            const despesasVariaveis = 0.2;
+
+            ordensServico.forEach(os => {
+                if (os.status === 'Fechado') {
+                    totalFaturado += os.valor;
+                    totalReceitas += os.valor;
+                } else {
+                    pedidosAbertos++;
+                    valorAberto += os.valor;
+                }
+            });
+
+            const totalDespesas = despesasFixas + (totalFaturado * despesasVariaveis);
+            const balancoTotal = totalReceitas - totalDespesas;
+
+            document.getElementById('total-faturado').textContent = `R$ ${totalFaturado.toFixed(2)}`;
+            document.getElementById('pedidos-abertos').textContent = pedidosAbertos;
+            document.getElementById('valor-aberto').textContent = `R$ ${valorAberto.toFixed(2)}`;
+            document.getElementById('projecao-faturamento').textContent = `R$ ${(totalFaturado + valorAberto).toFixed(2)}`;
+
+            document.getElementById('balanco-receitas').textContent = `R$ ${totalReceitas.toFixed(2)}`;
+            document.getElementById('balanco-despesas').textContent = `R$ ${totalDespesas.toFixed(2)}`;
+            document.getElementById('balanco-total').textContent = `R$ ${balancoTotal.toFixed(2)}`;
+        }
+
+        function carregarFluxoCaixa() {
+            const ordensServico = carregarDados('dtudo-os');
+            const clientes = carregarDados('dtudo-clientes');
+            const tabelaBody = document.getElementById('tabela-fluxo-caixa').getElementsByTagName('tbody')[0];
+            tabelaBody.innerHTML = '';
+
+            const ordensFechadas = ordensServico.filter(os => os.status === 'Fechado');
+
+            ordensFechadas.forEach(os => {
+                const cliente = clientes.find(c => c.id == os.clienteId) || { nome: 'Cliente não encontrado' };
+                const row = tabelaBody.insertRow();
+                row.insertCell(0).textContent = os.id;
+                row.insertCell(1).textContent = cliente.nome;
+                row.insertCell(2).textContent = os.servico;
+                row.insertCell(3).textContent = `R$ ${os.valor.toFixed(2)}`;
+                row.insertCell(4).textContent = os.data;
+                row.insertCell(5).textContent = 'Entrada';
+                row.classList.add('entrada');
+            });
+        }
+
+        // --- FUNÇÕES DE GERAÇÃO DE PDF ---
+        function gerarDocumento(tipo) {
+            let clienteId, servico, valor, dataServico, dataInicio, dataFinal, tecnico, condicoesPagamento;
+            let modalId;
+
+            if (tipo === 'orcamento') {
+                modalId = 'modal-orcamento';
+                clienteId = document.getElementById('orcamento-cliente').value;
+                servico = document.getElementById('orcamento-servico').value;
+                valor = document.getElementById('orcamento-valor').value;
+                dataServico = document.getElementById('orcamento-data').value;
+            } else if (tipo === 'os') {
+                modalId = 'modal-os';
+                clienteId = document.getElementById('os-modal-cliente').value;
+                servico = document.getElementById('os-modal-servico').value;
+                valor = document.getElementById('os-modal-valor').value;
+                dataInicio = document.getElementById('os-modal-data-inicio').value;
+                dataFinal = document.getElementById('os-modal-data-final').value;
+                tecnico = document.getElementById('os-modal-tecnico').value;
+            } else if (tipo === 'recibo') {
+                modalId = 'modal-recibo';
+                clienteId = document.getElementById('recibo-cliente').value;
+                servico = document.getElementById('recibo-servico').value;
+                valor = document.getElementById('recibo-valor').value;
+                dataServico = document.getElementById('recibo-data').value;
+            } else if (tipo === 'contrato') {
+                modalId = 'modal-contrato';
+                clienteId = document.getElementById('contrato-cliente').value;
+                servico = document.getElementById('contrato-servico').value;
+                valor = document.getElementById('contrato-valor').value;
+                dataInicio = document.getElementById('contrato-data-inicio').value;
+                dataFinal = document.getElementById('contrato-data-final').value;
+                condicoesPagamento = document.getElementById('contrato-condicoes-pagamento').value;
+            }
+
+            if (!clienteId || !servico || !valor || (!dataServico && !dataInicio)) {
+                alert("Por favor, preencha todos os campos para gerar o documento.");
+                return;
+            }
+
+            const clientes = carregarDados('dtudo-clientes');
+            const cliente = clientes.find(c => c.id == clienteId);
+            const empresaDados = carregarDadosEmpresa();
+
+            if (!cliente) {
+                alert("Cliente não encontrado.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const nomeDocumento = tipo.toUpperCase();
+            let y = 15;
+            const margin = 10;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const logoBase64 = localStorage.getItem('dtudo-logo');
+
+            doc.setFont("helvetica");
+            doc.setTextColor(58, 58, 58);
+
+            doc.setDrawColor(139, 44, 44);
+            doc.setFillColor(240, 240, 240);
+            doc.rect(margin, y, pageWidth - 2 * margin, 25, 'F');
+            doc.setLineWidth(1);
+            doc.rect(margin, y, pageWidth - 2 * margin, 25);
+
+            if (logoBase64) {
+                doc.addImage(logoBase64, 'PNG', margin + 5, y + 2.5, 40, 20);
+            }
+
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(139, 44, 44);
+            doc.text(nomeDocumento, 100, y + 15, null, null, 'center');
+
+            doc.setFontSize(8);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(58, 58, 58);
+            doc.text(empresaDados.nome, pageWidth - margin - 5, y + 5, null, null, 'right');
+            doc.text(empresaDados.cnpj, pageWidth - margin - 5, y + 9, null, null, 'right');
+            doc.text(empresaDados.contato, pageWidth - margin - 5, y + 13, null, null, 'right');
+            doc.text(empresaDados.endereco, pageWidth - margin - 5, y + 17, null, null, 'right');
+
+            y += 35;
+
+            doc.setDrawColor(200, 200, 200);
+            doc.setFillColor(255, 255, 255);
+            doc.rect(margin, y, pageWidth - 2 * margin, 60);
+
+            y += 5;
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("Dados do Cliente", margin + 5, y);
+            doc.text("Detalhes do Serviço", pageWidth / 2, y);
+
+            y += 5;
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Nome: ${cliente.nome}`, margin + 5, y + 5);
+            doc.text(`Telefone: ${cliente.telefone}`, margin + 5, y + 10);
+            doc.text(`CPF/CNPJ: ${cliente.cpfcnpj}`, margin + 5, y + 15);
+            doc.text(`Endereço: ${cliente.endereco}`, margin + 5, y + 20);
+
+            doc.setFont("helvetica", "bold");
+            doc.text(`Descrição:`, pageWidth / 2, y + 5);
+            doc.setFont("helvetica", "normal");
+            const splitServico = doc.splitTextToSize(servico, (pageWidth / 2) - margin - 5);
+            doc.text(splitServico, pageWidth / 2, y + 10);
+
+            let yValor = y + 25 + (splitServico.length * 4);
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(139, 44, 44);
+            doc.text(`Valor Total: R$ ${parseFloat(valor).toFixed(2)}`, margin + 5, yValor);
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(58, 58, 58);
+            if (dataServico) {
+                doc.text(`Data: ${new Date(dataServico).toLocaleDateString('pt-BR')}`, margin + 5, yValor + 5);
+            }
+            if (dataInicio && dataFinal) {
+                doc.text(`Período do Serviço: ${new Date(dataInicio).toLocaleDateString('pt-BR')} a ${new Date(dataFinal).toLocaleDateString('pt-BR')}`, margin + 5, yValor + 5);
+            }
+
+            y = yValor + 20;
+            doc.setTextColor(58, 58, 58);
+
+            if (tipo === 'orcamento') {
+                doc.setFontSize(10);
+                doc.text("Validade do Orçamento: 15 dias.", margin + 5, y);
+                y += 10;
+                doc.text("Observações: ____________________________________________________________________________________________________", margin + 5, y);
+                y += 10;
+                doc.text("_____________________________________________________________________________________________________________", margin + 5, y);
+            }
+
+            if (tipo === 'os') {
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
+                doc.text("Ordem de Serviço", margin + 5, y);
+                y += 5;
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.text(`Nº da OS: ${Date.now()}`, margin + 5, y);
+                doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')}`, margin + 5, y + 5);
+                doc.text(`Técnico Responsável: ${tecnico}`, margin + 5, y + 10);
+                doc.text(`Status: Em andamento`, margin + 5, y + 15);
+                y += 25;
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
+                doc.text("Detalhes do Serviço", margin + 5, y);
+                y += 5;
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.text(`Descrição: ${servico}`, margin + 5, y);
+                doc.text(`Valor: R$ ${parseFloat(valor).toFixed(2)}`, margin + 5, y + 5);
+                doc.text(`Período: ${new Date(dataInicio).toLocaleDateString('pt-BR')} a ${new Date(dataFinal).toLocaleDateString('pt-BR')}`, margin + 5, y + 10);
+                y += 20;
+                doc.text("Observações: ____________________________________________________________________________________________________", margin + 5, y);
+                y += 10;
+                doc.text("_____________________________________________________________________________________________________________", margin + 5, y);
+            }
+
+            if (tipo === 'contrato') {
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
+                doc.text("CONTRATO DE PRESTAÇÃO DE SERVIÇOS", margin + 5, y);
+                y += 10;
+
+                doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.text("Este contrato de prestação de serviços é celebrado entre:", margin + 5, y);
+                y += 5;
+                doc.text(`CONTRATANTE: ${cliente.nome}, CPF/CNPJ: ${cliente.cpfcnpj}, Endereço: ${cliente.endereco}`, margin + 5, y);
+                y += 5;
+                doc.text(`CONTRATADA: ${empresaDados.nome}, CNPJ: ${empresaDados.cnpj}, Endereço: ${empresaDados.endereco}`, margin + 5, y);
+                y += 10;
+
+                doc.setFont("helvetica", "bold");
+                doc.text("CLÁUSULA PRIMEIRA - DO OBJETO", margin + 5, y);
+                doc.setFont("helvetica", "normal");
+                y += 5;
+                let clausula1 = "O objeto do presente contrato é a prestação de serviços de " + servico + ", conforme detalhado no orçamento/ordem de serviço anexo.";
+                const splitClausula1 = doc.splitTextToSize(clausula1, pageWidth - 2 * margin);
+                doc.text(splitClausula1, margin + 5, y);
+                y += (splitClausula1.length * 5) + 5;
+
+                doc.setFont("helvetica", "bold");
+                doc.text("CLÁUSULA SEGUNDA - DO PRAZO", margin + 5, y);
+                doc.setFont("helvetica", "normal");
+                y += 5;
+                let clausulaPrazo = `O serviço terá início em ${new Date(dataInicio).toLocaleDateString('pt-BR')} e a conclusão está prevista para ${new Date(dataFinal).toLocaleDateString('pt-BR')}. Este prazo poderá ser prorrogado mediante acordo mútuo entre as partes, formalizado por escrito.`;
+                const splitClausulaPrazo = doc.splitTextToSize(clausulaPrazo, pageWidth - 2 * margin);
+                doc.text(splitClausulaPrazo, margin + 5, y);
+                y += (splitClausulaPrazo.length * 5) + 5;
+
+                doc.setFont("helvetica", "bold");
+                doc.text("CLÁUSULA TERCEIRA - DO PAGAMENTO", margin + 5, y);
+                doc.setFont("helvetica", "normal");
+                y += 5;
+                let clausula2 = `O valor total dos serviços é de R$ ${parseFloat(valor).toFixed(2)}, a ser pago da seguinte forma: ${condicoesPagamento || "[Detalhar condições de pagamento]"}.`;
+                const splitClausula2 = doc.splitTextToSize(clausula2, pageWidth - 2 * margin);
+                doc.text(splitClausula2, margin + 5, y);
+                y += (splitClausula2.length * 5) + 5;
+
+                doc.setFont("helvetica", "bold");
+                doc.text("CLÁUSULA QUARTA - DA GARANTIA", margin + 5, y);
+                doc.setFont("helvetica", "normal");
+                y += 5;
+                let clausula3 = "A CONTRATADA garante os serviços por um período de [x dias] a partir da data de conclusão, contra defeitos de execução.";
+                const splitClausula3 = doc.splitTextToSize(clausula3, pageWidth - 2 * margin);
+                doc.text(splitClausula3, margin + 5, y);
+                y += (splitClausula3.length * 5) + 5;
+
+                doc.setFont("helvetica", "bold");
+                doc.text("CLÁUSULA QUINTA - DO FORO", margin + 5, y);
+                doc.setFont("helvetica", "normal");
+                y += 5;
+                let clausula4 = `Para dirimir quaisquer controvérsias oriundas do contrato, as partes elegem o foro da Comarca de Maceió/AL.`;
+                const splitClausula4 = doc.splitTextToSize(clausula4, pageWidth - 2 * margin);
+                doc.text(splitClausula4, margin + 5, y);
+                y += (splitClausula4.length * 5) + 15;
+
+                doc.text("Assinaturas:", margin + 5, y);
+                y += 20;
+                doc.line(margin + 5, y, 90, y);
+                doc.line(120, y, pageWidth - margin - 5, y);
+                y += 5;
+                doc.text("Contratante", 45, y);
+                doc.text("Contratada", 145, y);
+            }
+
+            if (tipo === 'recibo') {
+                 doc.setFontSize(10);
+                 doc.text(`Recebi de ${cliente.nome} a quantia de R$ ${parseFloat(valor).toFixed(2)} referente ao(s) serviço(s) de ${servico}.`, margin + 5, y);
+                 y += 15;
+                 doc.text("Maceió, " + new Date().toLocaleDateString('pt-BR'), pageWidth - margin - 5, y, null, null, 'right');
+            }
+
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(150, 150, 150);
+                doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin, pageHeight - margin, null, null, 'right');
+            }
+
+            fecharModal(modalId);
+            doc.save(`${tipo.toUpperCase()}_${cliente.nome.replace(/\s/g, '_')}.pdf`);
+        }
+
+        // --- FUNÇÕES DE CONFIGURAÇÃO DA EMPRESA ---
+        document.getElementById('form-empresa').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const dadosEmpresa = {
+                nome: document.getElementById('empresa-nome').value,
+                slogan: document.getElementById('empresa-slogan').value,
+                contato: document.getElementById('empresa-contato').value,
+                cnpj: document.getElementById('empresa-cnpj').value,
+                endereco: document.getElementById('empresa-endereco').value,
+            };
+            salvarDadosEmpresa(dadosEmpresa);
+            atualizarHeader();
+            alert("Dados da empresa salvos com sucesso!");
+        });
+
+        function carregarDadosEmpresaInterface() {
+            const dados = carregarDadosEmpresa();
+            document.getElementById('empresa-nome').value = dados.nome;
+            document.getElementById('empresa-slogan').value = dados.slogan;
+            document.getElementById('empresa-contato').value = dados.contato;
+            document.getElementById('empresa-cnpj').value = dados.cnpj;
+            document.getElementById('empresa-endereco').value = dados.endereco;
+        }
+
+        function atualizarHeader() {
+            const dados = carregarDadosEmpresa();
+            document.getElementById('empresa-nome-header').textContent = dados.nome || 'Sistema de Gestão';
+            document.getElementById('empresa-slogan-header').textContent = dados.slogan || 'Slogan da Empresa';
+        }
+
+        // --- FUNÇÕES DE UPLOAD DE LOGO ---
+        document.getElementById('logo-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const logoBase64 = event.target.result;
+                    localStorage.setItem('dtudo-logo', logoBase64);
+                    carregarLogoPreview();
+                    alert("Logo salva com sucesso!");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function carregarLogoPreview() {
+            const preview = document.getElementById('logo-preview');
+            const logoBase64 = localStorage.getItem('dtudo-logo');
+            if (logoBase64) {
+                preview.src = logoBase64;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        // --- INICIALIZAÇÃO DO SISTEMA ---
+        document.addEventListener('DOMContentLoaded', (event) => {
+            atualizarHeader();
+            openTab(null, 'agendamento');
+            carregarClientes();
+            carregarSelectClientes();
+            carregarTabelaOS();
+            atualizarPainelFinanceiro();
+            carregarFluxoCaixa();
+            carregarDadosEmpresaInterface();
+            carregarLogoPreview();
+        });
+    </script>
+</body>
+</html>
