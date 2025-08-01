@@ -437,6 +437,12 @@
                 <input type="file" id="backup-import" accept=".json">
                 <button class="btn btn-secundario" onclick="importarBackup()">Importar Backup</button>
             </div>
+
+            <div class="section">
+                <h2>Limpar Sistema</h2>
+                <p>Esta ação irá apagar todos os dados salvos localmente, incluindo clientes, ordens de serviço e configurações da empresa. Esta ação é irreversível.</p>
+                <button class="btn" style="background-color: #f44336;" onclick="limparSistema()">Limpar Sistema</button>
+            </div>
         </div>
     </div>
 
@@ -715,6 +721,15 @@
                 }
             };
             reader.readAsText(file);
+        }
+        
+        // --- FUNÇÃO PARA LIMPAR O SISTEMA ---
+        function limparSistema() {
+            if (confirm("ATENÇÃO: Esta ação irá apagar TODOS os dados do sistema. Esta ação é irreversível. Deseja continuar?")) {
+                localStorage.clear();
+                alert("Sistema limpo com sucesso! A página será recarregada.");
+                window.location.reload();
+            }
         }
 
         // --- FUNÇÕES DE CADASTRO DE CLIENTES (AGORA EM MODAL) ---
